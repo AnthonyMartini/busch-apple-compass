@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCompass } from '@/hooks/useCompass';
 
 export default function Home() {
@@ -9,6 +9,17 @@ export default function Home() {
     setManualZipCode, enabled, setEnabled 
   } = useCompass();
   const [testZip, setTestZip] = useState('');
+  const [persistentLoading, setPersistentLoading] = useState(false);
+
+  // Ensure loading animation finishes even if API finishes early
+  useEffect(() => {
+    if (loading) {
+      setPersistentLoading(true);
+    } else {
+      const timer = setTimeout(() => setPersistentLoading(false), 1000); // match css duration
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
   const requestPermissions = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,8 +49,8 @@ export default function Home() {
       </div>
 
       <div className={`compass-container ${loading ? 'is-loading' : ''}`} style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
-        {/* Radar Loading Scan */}
-        {loading && <div className="compass-loading-overlay" />}
+        {/* Radar Loading Scan - Now a persistent ring pulse */}
+        {persistentLoading && <div className="compass-loading-overlay" />}
 
         {/* Permission Overlay inside Compass - Styled as a clean 'Start' state */}
         {!enabled && (
