@@ -63,12 +63,14 @@ body {
   font-weight: 800;
   letter-spacing: -2px;
   line-height: 1;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-.sub-title {
-  font-size: 1.1rem;
-  color: #666;
+.main-subtitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #888;
+  letter-spacing: -0.01em;
   max-width: 400px;
   margin: 0 auto;
 }

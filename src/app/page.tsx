@@ -46,6 +46,7 @@ export default function Home() {
 
       <div className="title-header">
         <h1 className="main-title">Bapple Compass</h1>
+        <p className="main-subtitle">Points you to your heart&apos;s deepest desire (nearest bapple retailer)</p>
       </div>
 
       <div className={`compass-container ${loading ? 'is-loading' : ''}`} style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
@@ -135,7 +136,7 @@ export default function Home() {
       </div>
 
       <footer style={{ marginTop: 'auto', padding: '2rem 0', fontSize: '0.7rem', opacity: 0.6, fontWeight: 500 }}>
-        BAPPLE COMPASS v2.1 &bull; ANTHONY MARTINI
+        BAPPLE COMPASS v1.0 &bull; ANTHONY MARTINI
       </footer>
     </main>
   );
