@@ -46,7 +46,10 @@ export default function Home() {
 
       <div className="title-header">
         <h1 className="main-title">Bapple Compass</h1>
-        <p className="main-subtitle">Points you to your heart&apos;s deepest desire (nearest bapple retailer)</p>
+        <p className="main-subtitle">
+          Points you to your heart&apos;s deepest desire<br />
+          (nearest bapple retailer)
+        </p>
       </div>
 
       <div className={`compass-container ${loading ? 'is-loading' : ''}`} style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
