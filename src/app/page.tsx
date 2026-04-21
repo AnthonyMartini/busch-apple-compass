@@ -122,7 +122,7 @@ export default function Home() {
         )}
       </div>
 
-      <footer style={{ marginTop: 'auto', padding: '2rem 0', fontSize: '0.7rem', opacity: 0.2, fontWeight: 500 }}>
+      <footer style={{ marginTop: 'auto', padding: '2rem 0', fontSize: '0.7rem', opacity: 0.6, fontWeight: 500 }}>
         BAPPLE COMPASS v2.1 &bull; ANTHONY MARTINI
       </footer>
     </main>

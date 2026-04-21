@@ -206,7 +206,7 @@ body {
   pointer-events: none;
   background-image: url('/bg-mountains.png');
   background-size: cover;
-  background-position: center 60%; /* Adjusted to 60% as requested */
+  background-position: center center; /* Dead centered at 50% as requested */
   background-repeat: no-repeat;
 }
 
@@ -232,7 +232,7 @@ body {
 
 .store-address {
   font-size: 0.9rem;
-  color: #888;
+  color: #333; /* Darkened from #888 for better legibility */
   line-height: 1.4;
   max-width: 300px;
 }
