@@ -160,7 +160,7 @@ body {
 }
 
 .btn-pill {
-  background: #000;
+  background: #991b1b;
   color: #fff;
   border: none;
   padding: 1.1rem 3rem;
@@ -174,13 +174,13 @@ body {
   justify-content: center;
   gap: 0.6rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 40px rgba(153, 27, 27, 0.25);
 }
 
 .btn-pill:hover {
-  background: #333;
+  background: #7f1d1d;
   transform: translateY(-2px);
-  box-shadow: 0 15px 45px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 45px rgba(153, 27, 27, 0.3);
 }
 
 .btn-pill:active {
