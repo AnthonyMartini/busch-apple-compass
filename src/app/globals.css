@@ -1,11 +1,11 @@
 :root {
-  --background: #080808;
-  --foreground: #ffffff;
+  --background: #ffffff;
+  --foreground: #000000;
   --apple-red: #ff3b30;
-  --apple-red-glow: rgba(255, 59, 48, 0.15); /* Reduced from 0.4 */
-  --metallic-silver: #e5e5e7;
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 59, 48, 0.15);
+  --busch-sky: #00A1EC;
+  --subtle-gray: #f2f2f7;
+  --border-gray: #e5e5ea;
+  --button-black: #111111;
 }
 
 * {
@@ -18,19 +18,19 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: black;
+  background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 body {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle at center, #0d0404 0%, #000000 100%);
+  justify-content: flex-start;
+  padding-top: 5vh;
 }
 
 @keyframes pulse {
@@ -48,43 +48,58 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2.5rem;
   width: 90%;
-  max-width: 400px;
+  max-width: 600px;
   text-align: center;
 }
 
+.title-header {
+  margin-bottom: 0.5rem;
+}
+
+.main-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.sub-title {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 .distance-hud {
-  font-size: 4.5rem;
+  font-size: 5rem;
   font-weight: 900;
-  letter-spacing: -3px;
-  color: var(--apple-red);
-  text-shadow: 0 0 20px var(--apple-red-glow); /* Reduced from 40px */
+  letter-spacing: -4px;
+  color: var(--foreground);
 }
 
 .distance-unit {
-  font-size: 1.2rem;
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: white;
-  opacity: 0.5;
-  margin-left: 0.2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #888;
+  margin-left: 0.1rem;
 }
 
 .compass-container {
   position: relative;
-  width: 320px;
-  height: 320px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--glass-border);
+  width: 340px;
+  height: 340px;
+  background: var(--subtle-gray);
+  border: 1px solid var(--border-gray);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 
-    0 0 30px rgba(0, 0, 0, 0.5), /* Removed outer red glow */
-    inset 0 0 20px rgba(0,0,0,0.8);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .compass-dial {
@@ -99,17 +114,15 @@ body {
   top: 15px;
   left: 50%;
   transform: translateX(-50%);
+  font-family: var(--font-geist-sans);
   font-size: 1.4rem;
   font-weight: 900;
-  color: var(--apple-red);
-  text-shadow: 0 0 5px var(--apple-red-glow);
-  opacity: 0.4;
+  color: #000;
+  opacity: 0.2;
 }
 
 .compass-marking:first-child {
-  opacity: 0.9;
-  color: #fff;
-  text-shadow: 0 0 10px var(--apple-red-glow);
+  opacity: 1;
 }
 
 .compass-needle {
@@ -118,7 +131,6 @@ body {
   height: 100%;
   z-index: 10;
   transition: transform 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-  filter: drop-shadow(0 0 5px var(--apple-red-glow)); /* Reduced from 15px */
 }
 
 .store-info {

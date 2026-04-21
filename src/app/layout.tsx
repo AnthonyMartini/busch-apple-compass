@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Busch Apple Compass | Find the Brew",
-  description: "Real-time compass to the nearest Busch Light Apple retailer.",
+  title: "Bapple Compass",
+  description: "Discover real-world brew inspiration. Your minimalist guide to the nearest Busch Apple Light.",
 };
 
 export const viewport: Viewport = {

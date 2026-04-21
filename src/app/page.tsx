@@ -30,14 +30,78 @@ export default function Home() {
 
   return (
     <main className="hud-container">
-      <header style={{ marginBottom: '1rem' }}>
-        <h1 style={{ 
-          fontSize: '1.2rem', fontWeight: 900, letterSpacing: '4px', 
-          textTransform: 'uppercase', color: 'var(--apple-red)', opacity: 0.8 
-        }}>
-          Bapple Compass
-        </h1>
-      </header>
+      <div className="title-header">
+        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
+          {/* Branded Icon - Centered */}
+          <img 
+            src="/icon.png" 
+            alt="Bapple Icon" 
+            width={64} 
+            height={64} 
+            style={{ borderRadius: '16px', boxShadow: '0 8px 20px rgba(0,0,0,0.1)' }} 
+          />
+        </div>
+        <h1 className="main-title">Bapple Compass</h1>
+        <p className="sub-title">
+          Discover real-world brew inspiration. Your minimalist guide to the nearest Busch Apple Light.
+        </p>
+      </div>
+
+      <div className="compass-container" style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
+        {/* Permission Overlay inside Compass - Styled as a clean 'Start' state */}
+        {!enabled && (
+          <div style={{ 
+            position: 'absolute', inset: 0, zIndex: 100, display: 'flex', flexDirection: 'column', 
+            alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.4)', 
+            borderRadius: '50%', backdropFilter: 'blur(8px)' 
+          }}>
+            <button className="btn-pill">Calibrate & Start</button>
+          </div>
+        )}
+        
+        {/* Rotating Dial (Fully SVG for perfect positioning) */}
+        <div 
+          className="compass-dial" 
+          style={{ transform: `rotate(${-heading}deg)` }}
+        >
+          <svg width="340" height="340" viewBox="0 0 340 340">
+            {/* Cardinal Directions - High Contrast for Light Mode */}
+            <text x="170" y="32" textAnchor="middle" fontSize="24" fontWeight="900" fill="#000">N</text>
+            <text x="305" y="178" textAnchor="middle" fontSize="20" fontWeight="900" fill="#000" opacity="0.2">E</text>
+            <text x="170" y="318" textAnchor="middle" fontSize="20" fontWeight="900" fill="#000" opacity="0.2">S</text>
+            <text x="35" y="178" textAnchor="middle" fontSize="20" fontWeight="900" fill="#000" opacity="0.2">W</text>
+
+            {/* Subtle Ticks */}
+            {[...Array(60)].map((_, i) => (
+              <line
+                key={i}
+                x1="170"
+                y1="10"
+                x2="170"
+                y2="18"
+                stroke="#000"
+                strokeOpacity={i % 15 === 0 ? "0.3" : "0.1"}
+                strokeWidth={i % 15 === 0 ? "2" : "1"}
+                transform={`rotate(${i * 6}, 170, 170)`}
+              />
+            ))}
+          </svg>
+        </div>
+
+        {/* Navigation Arrow */}
+        <div 
+          className="compass-needle" 
+          style={{ transform: `rotate(${(relativeHeading || 0)}deg)` }}
+        >
+          <svg width="340" height="340" viewBox="0 0 340 340">
+            <path 
+              d="M170 40 L195 170 L170 155 L145 170 Z" 
+              fill="var(--apple-red)"
+            />
+            <circle cx="170" cy="170" r="4" fill="#000" />
+          </svg>
+        </div>
+      </div>
 
       <div className="distance-hud">
         {distance && enabled ? (
@@ -46,91 +110,24 @@ export default function Home() {
             <span className="distance-unit">mi</span>
           </>
         ) : (
-          '---'
+          <span style={{ opacity: 0.1 }}>---</span>
         )}
-      </div>
-
-      <div className="compass-container" style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
-        {/* Permission Overlay inside Compass */}
-        {!enabled && (
-          <div style={{ 
-            position: 'absolute', inset: 0, zIndex: 100, display: 'flex', flexDirection: 'column', 
-            alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.6)', 
-            borderRadius: '50%', backdropFilter: 'blur(4px)' 
-          }}>
-            <p style={{ fontWeight: 900, letterSpacing: '2px', color: 'var(--apple-red)' }}>TAP TO</p>
-            <p style={{ fontWeight: 900, letterSpacing: '2px' }}>CALIBRATE</p>
-          </div>
-        )}
-        {/* Rotating Dial (Fully SVG for perfect positioning) */}
-        <div 
-          className="compass-dial" 
-          style={{ transform: `rotate(${-heading}deg)` }}
-        >
-          <svg width="320" height="320" viewBox="0 0 320 320">
-            {/* Cardinal Directions - Now all upright */}
-            <text x="160" y="35" textAnchor="middle" fontSize="24" fontWeight="900" fill="white">N</text>
-            <text x="285" y="165" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--apple-red)" opacity="0.6">E</text>
-            <text x="160" y="295" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--apple-red)" opacity="0.6">S</text>
-            <text x="35" y="165" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--apple-red)" opacity="0.6">W</text>
-
-            {/* Subtle Degree Ticks */}
-            {[...Array(40)].map((_, i) => (
-              <line
-                key={i}
-                x1="160"
-                y1="10"
-                x2="160"
-                y2="20"
-                stroke="var(--apple-red)"
-                strokeOpacity={i % 10 === 0 ? "0.6" : "0.2"}
-                strokeWidth={i % 10 === 0 ? "2" : "1"}
-                transform={`rotate(${i * 9}, 160, 160)`}
-              />
-            ))}
-          </svg>
-        </div>
-
-        {/* Simplified Navigation Arrow (Points only to Store) */}
-        <div 
-          className="compass-needle" 
-          style={{ transform: `rotate(${(relativeHeading || 0)}deg)` }}
-        >
-          <svg width="320" height="320" viewBox="0 0 320 320">
-            {/* Single Stealth Arrow - RED as requested */}
-            <path 
-              d="M160 40 L180 140 L160 130 L140 140 Z" 
-              fill="var(--apple-red)"
-              filter="drop-shadow(0 0 5px var(--apple-red-glow))"
-            />
-            {/* Center Core */}
-            <circle cx="160" cy="160" r="3" fill="white" opacity="0.5" />
-          </svg>
-        </div>
       </div>
 
       {nearestRetailer && enabled ? (
-        <div className="store-info">
-          <div className="store-name">{nearestRetailer.name}</div>
-          <div className="store-address">
+        <div className="store-info" style={{ borderTop: '1px solid #eee', paddingTop: '2rem', width: '100%' }}>
+          <div className="store-name" style={{ color: '#000', fontSize: '1.2rem', fontWeight: 700 }}>{nearestRetailer.name}</div>
+          <div className="store-address" style={{ fontSize: '0.9rem', color: '#888', marginTop: '0.5rem' }}>
             {nearestRetailer.address}, {nearestRetailer.city}
           </div>
         </div>
       ) : (
         <div className="store-info" style={{ opacity: 0.8 }}>
           {loading ? (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              <div className="loading-spinner" style={{ width: '15px', height: '15px', borderWidth: '2px' }}></div>
-              <span style={{ fontSize: '0.8rem' }}>Scanning for Busch Apple...</span>
-            </div>
-          ) : error && enabled ? (
-            <div style={{ color: 'var(--apple-red)', fontSize: '0.8rem' }}>
-              {error}
-              <button onClick={() => window.location.reload()} style={{ display: 'block', margin: '0.5rem auto', background: 'transparent', border: '1px solid var(--apple-red)', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.6rem' }}>RETRY</button>
-            </div>
+            <div style={{ color: '#888', fontSize: '0.9rem' }}>Scanning region...</div>
           ) : (
-            <span style={{ fontSize: '0.8rem', opacity: 0.5 }}>
-              {enabled ? 'Awaiting location...' : 'Sensors locked'}
+            <span style={{ fontSize: '0.9rem', color: '#ccc' }}>
+              {enabled ? 'Awaiting target...' : 'Sensors locked'}
             </span>
           )}
         </div>
@@ -138,23 +135,23 @@ export default function Home() {
 
       {/* Manual Search (Hidden when active) */}
       {!nearestRetailer && enabled && (
-        <div style={{ marginTop: '1rem' }}>
+        <div style={{ marginTop: '1rem', background: '#f9f9f9', padding: '0.5rem', borderRadius: '50px', border: '1px solid #eee' }}>
           <input 
             type="text" 
             placeholder="Search Zip" 
             value={testZip}
             onChange={(e) => setTestZip(e.target.value)}
             style={{ 
-              background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', 
-              padding: '0.3rem', borderRadius: '4px', width: '100px', fontSize: '0.7rem' 
+              background: 'transparent', border: 'none', color: '#000', outline: 'none',
+              padding: '0 1rem', width: '100px', fontSize: '0.8rem' 
             }}
           />
-          <button onClick={() => setManualZipCode(testZip)} style={{ fontSize: '0.7rem', marginLeft: '0.5rem', color: 'var(--apple-red)' }}>SEARCH</button>
+          <button onClick={() => setManualZipCode(testZip)} style={{ fontSize: '0.8rem', marginRight: '0.5rem', fontWeight: 600 }}>GO</button>
         </div>
       )}
 
-      <footer style={{ marginTop: 'auto', paddingBottom: '1rem', fontSize: '0.7rem', opacity: 0.3, letterSpacing: '1px' }}>
-        BUSCH APPLE COMPASS v1.4
+      <footer style={{ marginTop: 'auto', padding: '2rem 0', fontSize: '0.7rem', opacity: 0.2, fontWeight: 500 }}>
+        BAPPLE COMPASS v2.0 &bull; ANTHONY MARTINI
       </footer>
     </main>
   );
