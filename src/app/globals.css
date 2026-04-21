@@ -48,7 +48,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem; /* Further reduced from 1rem */
+  gap: 1.5rem; /* Increased from 0.5rem to prevent overlap with shadow ring */
   width: 90%;
   max-width: 600px;
   text-align: center;
