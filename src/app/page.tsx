@@ -125,13 +125,7 @@ export default function Home() {
         </div>
       ) : (
         <div className="store-info" style={{ opacity: 0.8 }}>
-          {loading ? (
-            <div style={{ color: '#888', fontSize: '0.9rem' }}>Scanning region...</div>
-          ) : (
-            <span style={{ fontSize: '0.9rem', color: '#ccc' }}>
-              {enabled ? 'Awaiting target...' : 'Sensors locked'}
-            </span>
-          )}
+          {loading && <div style={{ color: '#888', fontSize: '0.9rem' }}>Scanning region...</div>}
         </div>
       )}
 
