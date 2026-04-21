@@ -129,25 +129,8 @@ export default function Home() {
         </div>
       )}
 
-      {/* Manual Search (Hidden when active) */}
-      {!nearestRetailer && enabled && (
-        <div style={{ marginTop: '1rem', background: '#f9f9f9', padding: '0.5rem', borderRadius: '50px', border: '1px solid #eee' }}>
-          <input 
-            type="text" 
-            placeholder="Search Zip" 
-            value={testZip}
-            onChange={(e) => setTestZip(e.target.value)}
-            style={{ 
-              background: 'transparent', border: 'none', color: '#000', outline: 'none',
-              padding: '0 1rem', width: '100px', fontSize: '0.8rem' 
-            }}
-          />
-          <button onClick={() => setManualZipCode(testZip)} style={{ fontSize: '0.8rem', marginRight: '0.5rem', fontWeight: 600 }}>GO</button>
-        </div>
-      )}
-
       <footer style={{ marginTop: 'auto', padding: '2rem 0', fontSize: '0.7rem', opacity: 0.2, fontWeight: 500 }}>
-        BAPPLE COMPASS v2.0 &bull; ANTHONY MARTINI
+        BAPPLE COMPASS v2.1 &bull; ANTHONY MARTINI
       </footer>
     </main>
   );
