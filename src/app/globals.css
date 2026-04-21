@@ -151,8 +151,8 @@ body {
 }
 
 .compass-container.is-loading {
-  /* Use shadow ring for red loading indicator to keep alignment perfect */
-  box-shadow: 0 0 0 12px var(--apple-red), 0 10px 40px rgba(255, 59, 48, 0.1);
+  /* Keep the thick gray ring consistent during loading */
+  box-shadow: 0 0 0 12px #eee, 0 10px 40px rgba(0, 0, 0, 0.05);
   transition: all 0.5s ease;
 }
 
