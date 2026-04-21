@@ -30,12 +30,20 @@ export default function Home() {
 
   return (
     <main className="hud-container">
-      {/* Background Mountains - Sublte Brand Cue */}
+      {/* Faceted Busch-style Mountains */}
       <div className="mountain-background">
         <svg width="100%" height="100%" viewBox="0 0 1200 200" preserveAspectRatio="none">
+          {/* Shadow Facets (Right side of peaks - Darker) */}
           <path 
-            d="M0,200 L0,150 L100,100 L250,160 L400,80 L550,140 L700,60 L850,150 L1000,90 L1100,140 L1200,120 L1200,200 Z" 
-            fill="currentColor"
+            d="M600,60 L750,200 L600,200 Z M300,100 L420,200 L300,200 Z M900,90 L1080,200 L900,200 Z" 
+            fill="#000" 
+            opacity="0.12"
+          />
+          {/* Lit Facets (Left side of peaks - Lighter) */}
+          <path 
+            d="M600,60 L450,200 L600,200 Z M300,100 L180,200 L300,200 Z M900,90 L720,200 L900,200 Z" 
+            fill="#000" 
+            opacity="0.04"
           />
         </svg>
       </div>
