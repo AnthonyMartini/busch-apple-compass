@@ -206,7 +206,7 @@ body {
   pointer-events: none;
   background-image: url('/bg-mountains.png');
   background-size: cover;
-  background-position: center 85%; /* Shifted much lower to grounded position */
+  background-position: center 60%; /* Adjusted to 60% as requested */
   background-repeat: no-repeat;
 }
 
