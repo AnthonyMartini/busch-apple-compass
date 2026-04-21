@@ -48,14 +48,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem; /* Reduced from 2.5rem */
+  gap: 0.5rem; /* Further reduced from 1rem */
   width: 90%;
   max-width: 600px;
   text-align: center;
 }
 
 .title-header {
-  margin-bottom: 0.25rem; /* Reduced from 0.5rem */
+  margin-bottom: 0; /* Fully minimized */
 }
 
 .main-title {
@@ -209,7 +209,7 @@ body {
 }
 
 .store-info {
-  margin-top: 1rem; /* Reduced from 2rem */
+  margin-top: 0.5rem; /* Further reduced from 1rem */
   width: 100%;
   min-height: 140px; /* Increased slightly for the box padding */
   display: flex;
