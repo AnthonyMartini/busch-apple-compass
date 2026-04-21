@@ -93,8 +93,8 @@ body {
 
 .compass-container {
   position: relative;
-  width: 340px;
-  height: 340px;
+  width: 300px; /* Reduced from 340px */
+  height: 300px;
   background: #fff;
   border-radius: 50%;
   display: flex;
@@ -219,8 +219,8 @@ body {
 }
 
 .location-card {
-  width: min(90vw, 340px);
-  padding: 1.5rem;
+  width: min(90vw, 300px); /* Reduced from 340px to match compass */
+  padding: 1rem; /* Slightly reduced padding for smaller card */
   border: 1px solid #eee;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.5);
