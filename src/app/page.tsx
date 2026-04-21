@@ -41,16 +41,6 @@ export default function Home() {
       </div>
 
       <div className="title-header">
-        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-          {/* Branded Icon - Centered */}
-          <img 
-            src="/icon.png" 
-            alt="Bapple Icon" 
-            width={64} 
-            height={64} 
-            style={{ borderRadius: '16px', boxShadow: '0 8px 20px rgba(0,0,0,0.1)' }} 
-          />
-        </div>
         <h1 className="main-title">Bapple Compass</h1>
       </div>
 
