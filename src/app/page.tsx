@@ -49,7 +49,7 @@ export default function Home() {
             borderRadius: '50%', backdropFilter: 'blur(8px)' 
           }}>
             <button className="btn-pill">
-              Calibrate & Start <span>&rarr;</span>
+              Start <span>&rarr;</span>
             </button>
           </div>
         )}
