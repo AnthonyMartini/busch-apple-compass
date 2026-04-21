@@ -133,6 +133,33 @@ body {
   transition: transform 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
 
+@keyframes radar-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-subtle {
+  0% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0.2; }
+}
+
+.compass-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0%, rgba(255, 59, 48, 0.1) 50%, transparent 100%);
+  animation: radar-spin 2s linear infinite;
+  pointer-events: none;
+}
+
+.compass-container.is-loading {
+  border-color: var(--apple-red);
+  box-shadow: 0 10px 40px rgba(255, 59, 48, 0.1);
+  transition: all 0.5s ease;
+}
+
 .btn-pill {
   background: #000;
   color: #fff;

@@ -44,7 +44,10 @@ export default function Home() {
         <h1 className="main-title">Bapple Compass</h1>
       </div>
 
-      <div className="compass-container" style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
+      <div className={`compass-container ${loading ? 'is-loading' : ''}`} style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
+        {/* Radar Loading Scan */}
+        {loading && <div className="compass-loading-overlay" />}
+
         {/* Permission Overlay inside Compass - Styled as a clean 'Start' state */}
         {!enabled && (
           <div style={{ 
