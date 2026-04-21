@@ -74,7 +74,7 @@ export default function Home() {
           className="compass-dial" 
           style={{ transform: `rotate(${-heading}deg)` }}
         >
-          <svg width="340" height="340" viewBox="0 0 340 340">
+          <svg width="100%" height="100%" viewBox="0 0 340 340">
             {/* Cardinal Directions - High Contrast for Light Mode */}
             <text x="170" y="32" textAnchor="middle" fontSize="24" fontWeight="900" fill="#000">N</text>
             <text x="305" y="178" textAnchor="middle" fontSize="20" fontWeight="900" fill="#000" opacity="0.2">E</text>
@@ -98,17 +98,18 @@ export default function Home() {
           </svg>
         </div>
 
-        {/* Navigation Arrow */}
+        {/* Static Needle Housing */}
         <div 
           className="compass-needle" 
-          style={{ transform: `rotate(${(relativeHeading || 0)}deg)` }}
+          style={{ transform: `rotate(${relativeHeading}deg)` }}
         >
-          <svg width="340" height="340" viewBox="0 0 340 340">
+          <svg width="100%" height="100%" viewBox="0 0 340 340">
+            {/* Themed Pointer - Precision Red */}
             <path 
-              d="M170 40 L195 170 L170 155 L145 170 Z" 
+              d="M170,20 L185,150 L170,140 L155,150 Z" 
               fill="var(--apple-red)"
+              style={{ filter: 'drop-shadow(0 4px 10px rgba(255, 59, 48, 0.4))' }}
             />
-            <circle cx="170" cy="170" r="4" fill="#000" />
           </svg>
         </div>
       </div>
