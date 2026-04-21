@@ -196,6 +196,19 @@ body {
   transform: translateX(3px);
 }
 
+.mountain-background {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20vh;
+  z-index: -1;
+  opacity: 0.04;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+}
+
 .store-info {
   margin-top: 2rem;
   padding-top: 2rem;

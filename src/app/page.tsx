@@ -30,6 +30,16 @@ export default function Home() {
 
   return (
     <main className="hud-container">
+      {/* Background Mountains - Sublte Brand Cue */}
+      <div className="mountain-background">
+        <svg width="100%" height="100%" viewBox="0 0 1200 200" preserveAspectRatio="none">
+          <path 
+            d="M0,200 L0,150 L100,100 L250,160 L400,80 L550,140 L700,60 L850,150 L1000,90 L1100,140 L1200,120 L1200,200 Z" 
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+
       <div className="title-header">
         <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
           {/* Branded Icon - Centered */}
