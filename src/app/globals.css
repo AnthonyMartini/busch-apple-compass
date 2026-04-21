@@ -204,8 +204,8 @@ body {
   opacity: 0.15; /* Maintain a sophisticated faint watermark feel */
   pointer-events: none;
   background-image: url('/bg-mountains.png');
-  background-size: cover;
-  background-position: center center; /* Dead centered at 50% as requested */
+  background-size: 120% auto; /* Zoomed in from 'cover' */
+  background-position: center 50%; /* Maintained vertical alignment */
   background-repeat: no-repeat;
 }
 
