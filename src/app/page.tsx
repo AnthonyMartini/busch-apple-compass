@@ -121,15 +121,16 @@ export default function Home() {
       </div>
 
       <div className="store-info">
-        {nearestRetailer && enabled ? (
-          <>
+        {nearestRetailer && enabled && (
+          <div className={`location-card ${!persistentLoading ? 'is-visible' : ''}`}>
             <div className="store-name">{nearestRetailer.name}</div>
             <div className="store-address">
               {nearestRetailer.address}, {nearestRetailer.city}
             </div>
-          </>
-        ) : (
-          loading && <div style={{ color: '#888', fontSize: '0.9rem' }}>Scanning region...</div>
+          </div>
+        )}
+        {loading && persistentLoading && (
+          <div style={{ color: '#888', fontSize: '0.9rem' }}>Scanning region...</div>
         )}
       </div>
 
