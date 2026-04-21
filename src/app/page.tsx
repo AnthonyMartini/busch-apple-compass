@@ -116,18 +116,18 @@ export default function Home() {
         )}
       </div>
 
-      {nearestRetailer && enabled ? (
-        <div className="store-info" style={{ borderTop: '1px solid #eee', paddingTop: '2rem', width: '100%' }}>
-          <div className="store-name" style={{ color: '#000', fontSize: '1.2rem', fontWeight: 700 }}>{nearestRetailer.name}</div>
-          <div className="store-address" style={{ fontSize: '0.9rem', color: '#888', marginTop: '0.5rem' }}>
-            {nearestRetailer.address}, {nearestRetailer.city}
-          </div>
-        </div>
-      ) : (
-        <div className="store-info" style={{ opacity: 0.8 }}>
-          {loading && <div style={{ color: '#888', fontSize: '0.9rem' }}>Scanning region...</div>}
-        </div>
-      )}
+      <div className="store-info">
+        {nearestRetailer && enabled ? (
+          <>
+            <div className="store-name">{nearestRetailer.name}</div>
+            <div className="store-address">
+              {nearestRetailer.address}, {nearestRetailer.city}
+            </div>
+          </>
+        ) : (
+          loading && <div style={{ color: '#888', fontSize: '0.9rem' }}>Scanning region...</div>
+        )}
+      </div>
 
       <footer style={{ marginTop: 'auto', padding: '2rem 0', fontSize: '0.7rem', opacity: 0.2, fontWeight: 500 }}>
         BAPPLE COMPASS v2.1 &bull; ANTHONY MARTINI
