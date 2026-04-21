@@ -52,7 +52,9 @@ export default function Home() {
             alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.4)', 
             borderRadius: '50%', backdropFilter: 'blur(8px)' 
           }}>
-            <button className="btn-pill">Calibrate & Start</button>
+            <button className="btn-pill">
+              Calibrate & Start <span>&rarr;</span>
+            </button>
           </div>
         )}
         
