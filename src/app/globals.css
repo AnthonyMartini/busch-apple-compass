@@ -30,7 +30,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 5vh;
+  padding-top: 2vh; /* Reduced from 5vh */
 }
 
 @keyframes pulse {
@@ -48,14 +48,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.5rem;
+  gap: 1rem; /* Reduced from 2.5rem */
   width: 90%;
   max-width: 600px;
   text-align: center;
 }
 
 .title-header {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem; /* Reduced from 0.5rem */
 }
 
 .main-title {
@@ -209,7 +209,7 @@ body {
 }
 
 .store-info {
-  margin-top: 2rem;
+  margin-top: 1rem; /* Reduced from 2rem */
   width: 100%;
   min-height: 140px; /* Increased slightly for the box padding */
   display: flex;
