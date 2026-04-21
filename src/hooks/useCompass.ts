@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getDistance, getBearing } from '@/utils/math';
 
 interface Location {
@@ -28,13 +28,14 @@ export function useCompass() {
   const [error, setError] = useState<string | null>(null);
   const [zipCode, setZipCode] = useState<string | null>(null);
   const [manualZipCode, setManualZipCode] = useState<string | null>(null);
+  const geolocationUnsupported =
+    enabled && typeof window !== 'undefined' && !navigator.geolocation;
 
   // 1. Get User Location (only when enabled)
   useEffect(() => {
     if (!enabled) return;
 
     if (typeof window === 'undefined' || !navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
       return;
     }
 
@@ -60,13 +61,22 @@ export function useCompass() {
 
     const fetchZip = async () => {
       try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLocation.latitude}&lon=${userLocation.longitude}&zoom=18`,
-          { headers: { 'User-Agent': 'BuschAppleCompass/1.0 (Mobile App; testing)' } }
-        );
+        const response = await fetch('/api/zip-code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            latitude: userLocation.latitude,
+            longitude: userLocation.longitude,
+          }),
+        });
         const data = await response.json();
-        if (data.address && data.address.postcode) {
-          setZipCode(data.address.postcode);
+
+        if (!response.ok) {
+          throw new Error(data.error ?? 'Zip lookup failed');
+        }
+
+        if (data.zipCode) {
+          setZipCode(data.zipCode);
         }
       } catch (err) {
         console.error('Failed to resolve Zip Code:', err);
@@ -162,7 +172,7 @@ export function useCompass() {
     nearestRetailer,
     heading,
     loading,
-    error,
+    error: error ?? (geolocationUnsupported ? 'Geolocation is not supported by your browser' : null),
     setManualZipCode,
     ...getTargetData(),
   };

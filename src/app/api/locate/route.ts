@@ -4,19 +4,20 @@ const BUSCH_API_URL = 'https://api.beertech.com/singularity/graphql';
 
 export async function POST(request: Request) {
   try {
-    const { zipCode, radius = 25.0 } = await request.json();
+    const { zipCode } = await request.json();
+    const normalizedZipCode = String(zipCode ?? '').trim();
 
-    if (!zipCode) {
+    if (!normalizedZipCode) {
       return NextResponse.json({ error: 'Zip code is required' }, { status: 400 });
     }
 
     const query = `
-      query LocateRetailers {
+      query LocateRetailers($zipCode: String!, $radius: Float!) {
         locateRetailers(
           brandName: "BUSCH LT APPLE"
           limit: 100
-          zipCode: "${zipCode}"
-          radius: 2500.0
+          zipCode: $zipCode
+          radius: $radius
           productDescriptions: [
             "BUSCH LIGHT APPLE 30/12 OZ CAN DSTK",
             "BUSCH LIGHT APPLE 24/12 OZ CAN 2/12",
@@ -50,7 +51,13 @@ export async function POST(request: Request) {
         'Origin': 'https://www.busch.com/',
         'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
       },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({
+        query,
+        variables: {
+          zipCode: normalizedZipCode,
+          radius: 2500.0,
+        },
+      }),
     });
 
     const contentType = response.headers.get('content-type');
@@ -65,11 +72,14 @@ export async function POST(request: Request) {
 
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : 'Unexpected server error';
+
     console.error('Internal Server Error:', error);
-    return NextResponse.json({ 
-      error: 'Internal server error', 
-      message: error.message 
+    return NextResponse.json({
+      error: 'Internal server error',
+      message,
     }, { status: 500 });
   }
 }

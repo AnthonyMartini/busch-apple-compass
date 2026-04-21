@@ -1,24 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCompass } from '@/hooks/useCompass';
 
 export default function Home() {
-  const { 
-    nearestRetailer, loading, error, distance, heading, relativeHeading, 
-    setManualZipCode, enabled, setEnabled 
+  const {
+    nearestRetailer,
+    loading,
+    error,
+    distance,
+    heading,
+    relativeHeading,
+    enabled,
+    setEnabled,
   } = useCompass();
-  const [testZip, setTestZip] = useState('');
   const [persistentLoading, setPersistentLoading] = useState(false);
 
-  // Ensure loading animation finishes even if API finishes early
+  // Ensure loading animation finishes even if API finishes early.
   useEffect(() => {
     if (loading) {
-      setPersistentLoading(true);
-    } else {
-      const timer = setTimeout(() => setPersistentLoading(false), 1000); // match css duration
-      return () => clearTimeout(timer);
+      const timer = window.setTimeout(() => setPersistentLoading(true), 0);
+      return () => window.clearTimeout(timer);
     }
+
+    const timer = window.setTimeout(() => setPersistentLoading(false), 1000);
+    return () => window.clearTimeout(timer);
   }, [loading]);
 
   const requestPermissions = async () => {
@@ -33,115 +39,169 @@ export default function Home() {
       } catch (err) {
         console.error('Permission request failed:', err);
       }
-    } else {
-      // Non-iOS or already granted
-      setEnabled(true);
+      return;
     }
+
+    setEnabled(true);
   };
 
   return (
     <main className="hud-container">
-      {/* Themed Background Backdrop */}
       <div className="mountain-background" />
 
-      <div className="title-header">
-        <h1 className="main-title">Bapple Compass</h1>
-        <p className="main-subtitle">
-          Points you to your heart&apos;s deepest desire<br />
-          (nearest bapple retailer)
-        </p>
-      </div>
+      <section className="app-shell" aria-label="Nearest Busch Apple compass">
+        <header className="title-header">
+          <h1 className="main-title">Bapple Compass</h1>
+          <p className="main-subtitle">
+            Points you to your heart&apos;s deepest desire
+            <br />
+            (nearest bapple retailer)
+          </p>
+        </header>
 
-      <div className={`compass-container ${loading ? 'is-loading' : ''}`} style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
-        {/* Radar Loading Scan - Now a persistent ring pulse */}
-        {persistentLoading && <div className="compass-loading-overlay" />}
-
-        {/* Permission Overlay inside Compass - Styled as a clean 'Start' state */}
-        {!enabled && (
-          <div style={{ 
-            position: 'absolute', inset: 0, zIndex: 100, display: 'flex', flexDirection: 'column', 
-            alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.4)', 
-            borderRadius: '50%', backdropFilter: 'blur(8px)' 
-          }}>
-            <button className="btn-pill">
-              Start <span>&rarr;</span>
-            </button>
-          </div>
-        )}
-        
-        {/* Rotating Dial (Fully SVG for perfect positioning) */}
-        <div 
-          className="compass-dial" 
-          style={{ transform: `rotate(${-heading}deg)` }}
+        <button
+          className={`compass-container ${loading ? 'is-loading' : ''}`}
+          type="button"
+          onClick={!enabled ? requestPermissions : undefined}
+          disabled={enabled}
+          aria-label={
+            enabled
+              ? 'Compass active'
+              : 'Enable motion and location access to start the compass'
+          }
         >
-          <svg width="100%" height="100%" viewBox="0 0 340 340">
-            {/* Cardinal Directions - High Contrast for Light Mode */}
-            <text x="170" y="32" textAnchor="middle" fontSize="24" fontWeight="900" fill="#000">N</text>
-            <text x="305" y="178" textAnchor="middle" fontSize="20" fontWeight="900" fill="#000" opacity="0.2">E</text>
-            <text x="170" y="318" textAnchor="middle" fontSize="20" fontWeight="900" fill="#000" opacity="0.2">S</text>
-            <text x="35" y="178" textAnchor="middle" fontSize="20" fontWeight="900" fill="#000" opacity="0.2">W</text>
+          {persistentLoading && <div className="compass-loading-overlay" />}
 
-            {/* Subtle Ticks */}
-            {[...Array(60)].map((_, i) => (
-              <line
-                key={i}
-                x1="170"
-                y1="10"
-                x2="170"
-                y2="18"
-                stroke="#000"
-                strokeOpacity={i % 15 === 0 ? "0.3" : "0.1"}
-                strokeWidth={i % 15 === 0 ? "2" : "1"}
-                transform={`rotate(${i * 6}, 170, 170)`}
-              />
-            ))}
-          </svg>
-        </div>
-
-        {/* Static Needle Housing */}
-        <div 
-          className="compass-needle" 
-          style={{ transform: `rotate(${relativeHeading}deg)` }}
-        >
-          <svg width="100%" height="100%" viewBox="0 0 340 340">
-            {/* Themed Pointer - Precision Red */}
-            <path 
-              d="M170,20 L185,150 L170,140 L155,150 Z" 
-              fill="var(--apple-red)"
-              style={{ filter: 'drop-shadow(0 4px 10px rgba(255, 59, 48, 0.4))' }}
-            />
-          </svg>
-        </div>
-      </div>
-
-      <div className="distance-hud">
-        {distance && enabled ? (
-          <>
-            {(distance * 0.000621371).toFixed(1)}
-            <span className="distance-unit">mi</span>
-          </>
-        ) : (
-          <span style={{ opacity: 0.1 }}>---</span>
-        )}
-      </div>
-
-      <div className="store-info">
-        {nearestRetailer && enabled && (
-          <div className={`location-card ${!persistentLoading ? 'is-visible' : ''}`}>
-            <div className="store-name">{nearestRetailer.name}</div>
-            <div className="store-address">
-              {nearestRetailer.address}, {nearestRetailer.city}
+          {!enabled && (
+            <div className="permission-overlay">
+              <span className="btn-pill">
+                Start <span>&rarr;</span>
+              </span>
             </div>
-          </div>
-        )}
-        {loading && persistentLoading && (
-          <div style={{ color: '#888', fontSize: '0.9rem' }}>Scanning region...</div>
-        )}
-      </div>
+          )}
 
-      <footer style={{ marginTop: 'auto', padding: '2rem 0', fontSize: '0.7rem', opacity: 0.6, fontWeight: 500 }}>
-        BAPPLE COMPASS v1.0 &bull; ANTHONY MARTINI
-      </footer>
+          <div
+            className="compass-dial"
+            style={{ transform: `rotate(${-heading}deg)` }}
+          >
+            <svg width="100%" height="100%" viewBox="0 0 340 340" aria-hidden="true">
+              <text
+                x="170"
+                y="32"
+                textAnchor="middle"
+                fontSize="24"
+                fontWeight="900"
+                fill="#111111"
+              >
+                N
+              </text>
+              <text
+                x="305"
+                y="178"
+                textAnchor="middle"
+                fontSize="20"
+                fontWeight="900"
+                fill="#111111"
+                opacity="0.2"
+              >
+                E
+              </text>
+              <text
+                x="170"
+                y="318"
+                textAnchor="middle"
+                fontSize="20"
+                fontWeight="900"
+                fill="#111111"
+                opacity="0.2"
+              >
+                S
+              </text>
+              <text
+                x="35"
+                y="178"
+                textAnchor="middle"
+                fontSize="20"
+                fontWeight="900"
+                fill="#111111"
+                opacity="0.2"
+              >
+                W
+              </text>
+
+              {[...Array(60)].map((_, i) => (
+                <line
+                  key={i}
+                  x1="170"
+                  y1="10"
+                  x2="170"
+                  y2="18"
+                  stroke="#111111"
+                  strokeOpacity={i % 15 === 0 ? '0.3' : '0.1'}
+                  strokeWidth={i % 15 === 0 ? '2' : '1'}
+                  transform={`rotate(${i * 6}, 170, 170)`}
+                />
+              ))}
+            </svg>
+          </div>
+
+          <div
+            className="compass-needle"
+            style={{ transform: `rotate(${relativeHeading ?? 0}deg)` }}
+          >
+            <svg width="100%" height="100%" viewBox="0 0 340 340" aria-hidden="true">
+              <path
+                d="M170,20 L185,150 L170,140 L155,150 Z"
+                fill="var(--apple-red)"
+                style={{
+                  filter: 'drop-shadow(0 4px 10px rgba(255, 59, 48, 0.4))',
+                }}
+              />
+            </svg>
+          </div>
+        </button>
+
+        <div className="distance-panel" aria-live="polite">
+          <div className="distance-hud">
+            {distance && enabled ? (
+              <>
+                {(distance * 0.000621371).toFixed(1)}
+                <span className="distance-unit">mi</span>
+              </>
+            ) : (
+              <span className="distance-placeholder">---</span>
+            )}
+          </div>
+          <p className="status-copy">
+            {error
+              ? error
+              : loading && persistentLoading
+                ? 'Scanning your region for Busch Apple.'
+                : enabled
+                  ? ''
+                  : 'Tap the compass to begin.'}
+          </p>
+        </div>
+
+        <div className="store-info">
+          {nearestRetailer && enabled && (
+            <article
+              className={`location-card ${!persistentLoading ? 'is-visible' : ''}`}
+            >
+              <p className="card-label">Closest retailer</p>
+              <div className="store-name">{nearestRetailer.name}</div>
+              <div className="store-address">
+                {nearestRetailer.address}, {nearestRetailer.city},{' '}
+                {nearestRetailer.state} {nearestRetailer.zipCode}
+              </div>
+            </article>
+          )}
+        </div>
+
+        <footer className="app-footer">
+          BAPPLE COMPASS v1.0 | ANTHONY MARTINI
+        </footer>
+      </section>
     </main>
   );
 }
