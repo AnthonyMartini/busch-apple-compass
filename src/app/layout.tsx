@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Bapple Compass",
-  description: "Discover real-world brew inspiration. Your minimalist guide to the nearest Busch Apple Light.",
+  description: "Find your nearest Busch Apple Light.",
 };
 
 export const viewport: Viewport = {

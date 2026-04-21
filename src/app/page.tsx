@@ -42,9 +42,6 @@ export default function Home() {
           />
         </div>
         <h1 className="main-title">Bapple Compass</h1>
-        <p className="sub-title">
-          Discover real-world brew inspiration. Your minimalist guide to the nearest Busch Apple Light.
-        </p>
       </div>
 
       <div className="compass-container" style={{ cursor: !enabled ? 'pointer' : 'default' }} onClick={!enabled ? requestPermissions : undefined}>
