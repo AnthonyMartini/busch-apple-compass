@@ -198,15 +198,16 @@ body {
 
 .mountain-background {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 30vh; /* Increased from 15vh to move peaks higher */
+  height: 100vh; /* Full height to allow centering */
   z-index: 0;
   opacity: 1; /* Opacity controlled at facet level in SVG */
   pointer-events: none;
   display: flex;
-  align-items: flex-end;
+  align-items: center; /* Center the peaks vertically */
+  justify-content: center;
   color: #000;
 }
 

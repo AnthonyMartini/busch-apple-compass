@@ -30,9 +30,9 @@ export default function Home() {
 
   return (
     <main className="hud-container">
-      {/* Faceted Busch-style Mountains */}
+      {/* Faceted Busch-style Mountains - Centered Background */}
       <div className="mountain-background">
-        <svg width="100%" height="100%" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <svg width="100%" height="400" viewBox="0 0 1200 200" preserveAspectRatio="xMidYMid meet">
           {/* Shadow Facets (Right side of peaks - Darker) */}
           <path 
             d="M600,60 L750,200 L600,200 Z M300,100 L420,200 L300,200 Z M900,90 L1080,200 L900,200 Z" 
