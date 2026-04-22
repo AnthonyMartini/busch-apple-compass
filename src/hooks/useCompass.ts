@@ -111,7 +111,7 @@ export function useCompass() {
           setNearestRetailer(sorted[0]);
           setLoading(false);
         } else {
-          setError('No Busch Apple found in the entire region.');
+          setError('No Busch Apple found in your area :(');
           setLoading(false);
         }
       } catch (err) {

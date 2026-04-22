@@ -110,8 +110,10 @@ body {
   justify-content: center;
   padding: 0;
   cursor: default;
-  box-shadow: 0 0 0 clamp(0.55rem, 1.4vw, 0.9rem) #ebe5db, 0 20px 50px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 0 clamp(0.55rem, 1.4vw, 0.9rem) #e0e0e0, 0 20px 50px rgba(0, 0, 0, 0.08);
   appearance: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .compass-dial {
@@ -133,7 +135,7 @@ body {
   0% {
     transform: scale(0);
     opacity: 0.82;
-    border-width: 8px;
+    border-width: 16px;
   }
 
   100% {
@@ -156,8 +158,7 @@ body {
 }
 
 .compass-container.is-loading {
-  box-shadow: 0 0 0 clamp(0.55rem, 1.4vw, 0.9rem) #ebe5db, 0 10px 40px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.5s ease;
+  box-shadow: 0 0 0 clamp(0.55rem, 1.4vw, 0.9rem) #e0e0e0, 0 10px 40px rgba(0, 0, 0, 0.05);
 }
 
 .compass-container:disabled {
@@ -168,33 +169,47 @@ body {
   cursor: pointer;
 }
 
-.permission-overlay {
+.state-overlay {
   position: absolute;
   inset: 0;
   z-index: 100;
   display: grid;
   place-items: center;
-  align-content: center;
-  gap: 0.7rem;
-  padding: 1.25rem;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.48);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(602px);
+  -webkit-backdrop-filter: blur(602px);
+  color: #585858;
+  font-weight: 800;
+  font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+  letter-spacing: -0.02em;
+  transition: opacity 0.5s ease, backdrop-filter 0.5s ease;
+  pointer-events: none;
 }
 
-.btn-pill {
-  background: #991b1b;
-  color: #fff;
-  padding: 1rem 2.4rem;
-  border-radius: 100px;
-  font-weight: 700;
-  font-size: 0.94rem;
-  letter-spacing: -0.02em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  box-shadow: 0 10px 40px rgba(153, 27, 27, 0.25);
+.gray-pulses {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.gray-pulse-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 0px solid rgba(16, 16, 16, 0.25);
+  background: transparent;
+  animation: shockwave-pulse 1.8s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+}
+
+.gray-pulse-ring:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.gray-pulse-ring:nth-child(3) {
+  animation-delay: 1.2s;
 }
 
 .mountain-background {
@@ -235,11 +250,12 @@ body {
   }
 
   .title-header {
-    gap: 0.45rem;
+    gap: 1rem;
   }
 
   .main-title {
     font-size: clamp(3.15rem, 5.2vw, 4.5rem);
+    line-height: 1;
   }
 
   .main-subtitle {
@@ -424,4 +440,27 @@ body {
   .store-address {
     max-width: 24ch;
   }
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-item-svg {
+  opacity: 0;
+  transform: scale(0.95);
+  transform-origin: center;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item-svg.is-visible {
+  opacity: 1;
+  transform: scale(1);
 }

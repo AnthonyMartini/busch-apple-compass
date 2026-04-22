@@ -14,18 +14,19 @@ export default function Home() {
     enabled,
     setEnabled,
   } = useCompass();
-  const [persistentLoading, setPersistentLoading] = useState(false);
+  const [showPulse, setShowPulse] = useState(false);
+  const [hasShownPulse, setHasShownPulse] = useState(false);
 
-  // Ensure loading animation finishes even if API finishes early.
   useEffect(() => {
-    if (loading) {
-      const timer = window.setTimeout(() => setPersistentLoading(true), 0);
+    if (nearestRetailer && !hasShownPulse) {
+      setShowPulse(true);
+      const timer = window.setTimeout(() => {
+        setShowPulse(false);
+        setHasShownPulse(true);
+      }, 1000);
       return () => window.clearTimeout(timer);
     }
-
-    const timer = window.setTimeout(() => setPersistentLoading(false), 1000);
-    return () => window.clearTimeout(timer);
-  }, [loading]);
+  }, [nearestRetailer, hasShownPulse]);
 
   const requestPermissions = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,7 +61,7 @@ export default function Home() {
         </header>
 
         <button
-          className={`compass-container ${loading ? 'is-loading' : ''}`}
+          className={`compass-container ${enabled && !nearestRetailer ? 'is-loading' : ''}`}
           type="button"
           onClick={!enabled ? requestPermissions : undefined}
           disabled={enabled}
@@ -70,13 +71,19 @@ export default function Home() {
               : 'Enable motion and location access to start the compass'
           }
         >
-          {persistentLoading && <div className="compass-loading-overlay" />}
+          {showPulse && <div className="compass-loading-overlay" />}
 
-          {!enabled && (
-            <div className="permission-overlay">
-              <span className="btn-pill">
-                Start <span>&rarr;</span>
-              </span>
+          {enabled && !nearestRetailer && !error && (
+            <div className="gray-pulses">
+              <div className="gray-pulse-ring" />
+              <div className="gray-pulse-ring" />
+              <div className="gray-pulse-ring" />
+            </div>
+          )}
+
+          {(!enabled || !nearestRetailer || error) && (
+            <div className="state-overlay">
+              {error ? "No Bapple Here" : (!enabled ? "Tap to Begin" : "Loading...")}
             </div>
           )}
 
@@ -129,25 +136,27 @@ export default function Home() {
                 W
               </text>
 
-              {[...Array(60)].map((_, i) => (
-                <line
-                  key={i}
-                  x1="170"
-                  y1="10"
-                  x2="170"
-                  y2="18"
-                  stroke="#111111"
-                  strokeOpacity={i % 15 === 0 ? '0.3' : '0.1'}
-                  strokeWidth={i % 15 === 0 ? '2' : '1'}
-                  transform={`rotate(${i * 6}, 170, 170)`}
-                />
-              ))}
+              <g className={`reveal-item-svg ${hasShownPulse ? 'is-visible' : ''}`} style={{ transitionDelay: '0s' }}>
+                {[...Array(60)].map((_, i) => (
+                  <line
+                    key={i}
+                    x1="170"
+                    y1="10"
+                    x2="170"
+                    y2="18"
+                    stroke="#111111"
+                    strokeOpacity={i % 15 === 0 ? '0.3' : '0.1'}
+                    strokeWidth={i % 15 === 0 ? '2' : '1'}
+                    transform={`rotate(${i * 6}, 170, 170)`}
+                  />
+                ))}
+              </g>
             </svg>
           </div>
 
           <div
             className="compass-needle"
-            style={{ transform: `rotate(${relativeHeading ?? 0}deg)` }}
+            style={{ transform: `rotate(${hasShownPulse ? (relativeHeading ?? 0) : 0}deg)` }}
           >
             <svg width="100%" height="100%" viewBox="0 0 340 340" aria-hidden="true">
               <path
@@ -164,10 +173,10 @@ export default function Home() {
         <div className="distance-panel" aria-live="polite">
           <div className="distance-hud">
             {distance && enabled ? (
-              <>
+              <div className={`reveal-item ${hasShownPulse ? 'is-visible' : ''}`} style={{ transitionDelay: '0.15s' }}>
                 {(distance * 0.000621371).toFixed(1)}
                 <span className="distance-unit">mi</span>
-              </>
+              </div>
             ) : (
               <span className="distance-placeholder">---</span>
             )}
@@ -175,18 +184,21 @@ export default function Home() {
           <p className="status-copy">
             {error
               ? error
-              : loading && persistentLoading
+              : enabled && !nearestRetailer
                 ? 'Scanning your region for Busch Apple.'
-                : enabled
-                  ? ''
-                  : 'Tap the compass to begin.'}
+                : showPulse 
+                  ? 'Found target...'
+                  : enabled
+                    ? ''
+                    : 'Tap the compass to begin.'}
           </p>
         </div>
 
         <div className="store-info">
           {nearestRetailer && enabled && (
             <article
-              className={`location-card ${!persistentLoading ? 'is-visible' : ''}`}
+              className={`location-card ${hasShownPulse ? 'is-visible' : ''}`}
+              style={{ transitionDelay: '0.3s' }}
             >
               <p className="card-label">Closest retailer</p>
               <div className="store-name">{nearestRetailer.name}</div>
