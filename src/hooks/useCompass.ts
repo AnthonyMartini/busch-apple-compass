@@ -110,7 +110,14 @@ export function useCompass() {
 
         if (data.data?.locateRetailers?.retailers && data.data.locateRetailers.retailers.length > 0) {
           const fetched: Retailer[] = data.data.locateRetailers.retailers;
-          const sorted = fetched.sort((a, b) => a.distance - b.distance);
+          const sorted = fetched.sort((a, b) => {
+            if (userLocation) {
+              const dA = getDistance(userLocation.latitude, userLocation.longitude, a.latitude, a.longitude);
+              const dB = getDistance(userLocation.latitude, userLocation.longitude, b.latitude, b.longitude);
+              return dA - dB;
+            }
+            return a.distance - b.distance;
+          });
           setRetailers(sorted);
           setActiveIndex(0);
           setLoading(false);
