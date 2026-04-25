@@ -496,3 +496,54 @@ body {
   opacity: 1;
   transform: scale(1);
 }
+
+/* ── Retailer prev / next navigator ──────────────────────────────── */
+.retailer-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+}
+
+.retailer-nav-btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border-gray);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  color: rgba(16, 16, 16, 0.7);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.15s ease, opacity 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.retailer-nav-btn:hover:not(:disabled) {
+  background: rgba(16, 16, 16, 0.07);
+  color: #111;
+  transform: scale(1.08);
+}
+
+.retailer-nav-btn:active:not(:disabled) {
+  transform: scale(0.93);
+}
+
+.retailer-nav-btn:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.retailer-nav-count {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(16, 16, 16, 0.52);
+  min-width: 3.2rem;
+  text-align: center;
+}
+
+.retailer-nav-sep {
+  opacity: 0.4;
+  margin: 0 0.1em;
+}

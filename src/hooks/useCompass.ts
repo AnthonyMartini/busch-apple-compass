@@ -8,7 +8,7 @@ interface Location {
   longitude: number;
 }
 
-interface Retailer {
+export interface Retailer {
   name: string;
   address: string;
   city: string;
@@ -23,11 +23,14 @@ export function useCompass() {
   const [enabled, setEnabled] = useState(false);
   const [userLocation, setUserLocation] = useState<Location | null>(null);
   const [heading, setHeading] = useState<number>(0);
-  const [nearestRetailer, setNearestRetailer] = useState<Retailer | null>(null);
+  const [retailers, setRetailers] = useState<Retailer[]>([]);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [zipCode, setZipCode] = useState<string | null>(null);
   const [manualZipCode, setManualZipCode] = useState<string | null>(null);
+
+  const nearestRetailer = retailers[activeIndex] ?? null;
   const geolocationUnsupported =
     enabled && typeof window !== 'undefined' && !navigator.geolocation;
 
@@ -93,7 +96,7 @@ export function useCompass() {
   useEffect(() => {
     if (!enabled) return;
     const activeZip = manualZipCode || zipCode;
-    if (!activeZip || nearestRetailer) return;
+    if (!activeZip || retailers.length > 0) return;
 
     const fetchRetailers = async () => {
       setLoading(true);
@@ -106,9 +109,10 @@ export function useCompass() {
         const data = await response.json();
 
         if (data.data?.locateRetailers?.retailers && data.data.locateRetailers.retailers.length > 0) {
-          const retailers = data.data.locateRetailers.retailers;
-          const sorted = retailers.sort((a: Retailer, b: Retailer) => a.distance - b.distance);
-          setNearestRetailer(sorted[0]);
+          const fetched: Retailer[] = data.data.locateRetailers.retailers;
+          const sorted = fetched.sort((a, b) => a.distance - b.distance);
+          setRetailers(sorted);
+          setActiveIndex(0);
           setLoading(false);
         } else {
           setError('No Busch Apple found in your area :(');
@@ -122,7 +126,7 @@ export function useCompass() {
     };
 
     fetchRetailers();
-  }, [enabled, zipCode, manualZipCode, nearestRetailer]);
+  }, [enabled, zipCode, manualZipCode, retailers.length]);
 
   // 4. Track Heading (Compass Orientation) - only when enabled
   useEffect(() => {
@@ -165,11 +169,24 @@ export function useCompass() {
     };
   }, [userLocation, nearestRetailer, heading]);
 
+  const goNext = useCallback(() => {
+    setActiveIndex((i) => Math.min(i + 1, retailers.length - 1));
+  }, [retailers.length]);
+
+  const goPrev = useCallback(() => {
+    setActiveIndex((i) => Math.max(i - 1, 0));
+  }, []);
+
   return {
     enabled,
     setEnabled,
     userLocation,
     nearestRetailer,
+    retailers,
+    activeIndex,
+    setActiveIndex,
+    goNext,
+    goPrev,
     heading,
     loading,
     error: error ?? (geolocationUnsupported ? 'Geolocation is not supported by your browser' : null),

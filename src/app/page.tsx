@@ -6,6 +6,10 @@ import { useCompass } from '@/hooks/useCompass';
 export default function Home() {
   const {
     nearestRetailer,
+    retailers,
+    activeIndex,
+    goNext,
+    goPrev,
     loading,
     error,
     distance,
@@ -39,7 +43,7 @@ export default function Home() {
       }, 1000);
       return () => window.clearTimeout(timer);
     }
-  }, [nearestRetailer, hasShownPulse]);
+  }, [nearestRetailer?.name, hasShownPulse]); // re-trigger on actual retailer change
 
   const requestPermissions = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -232,6 +236,38 @@ export default function Home() {
                 {nearestRetailer.address}, {nearestRetailer.city},{' '}
                 {nearestRetailer.state} {nearestRetailer.zipCode}
               </div>
+
+              {retailers.length > 1 && (
+                <div className="retailer-nav">
+                  <button
+                    id="retailer-prev-btn"
+                    className="retailer-nav-btn"
+                    type="button"
+                    onClick={goPrev}
+                    disabled={activeIndex === 0}
+                    aria-label="Previous retailer"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <span className="retailer-nav-count">
+                    {activeIndex + 1} <span className="retailer-nav-sep">/</span> {retailers.length}
+                  </span>
+                  <button
+                    id="retailer-next-btn"
+                    className="retailer-nav-btn"
+                    type="button"
+                    onClick={goNext}
+                    disabled={activeIndex === retailers.length - 1}
+                    aria-label="Next retailer"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </article>
           )}
         </div>
